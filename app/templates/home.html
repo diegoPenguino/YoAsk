@@ -1,0 +1,122 @@
+{% extends "base_page.html" %} {% block content %}
+<br />
+<br />
+
+<h3>Welcome, wanna ask some useless question?</h3>
+<form method="POST">
+  <textarea name="question" id="question" class="form-control"></textarea>
+  <br />
+
+  <div class="input-group mb-3">
+    <span class="input-group-text">First option</span>
+    <input
+      type="text"
+      class="form-control"
+      aria-label="First option"
+      id="first-op"
+      name="first-op"
+      placeholder="Leave the field empty if you don't want to add all 4 options"
+    />
+  </div>
+
+  <div class="input-group mb-3">
+    <span class="input-group-text">Second option</span>
+    <input
+      type="text"
+      class="form-control"
+      aria-label="Second option"
+      id="second-op"
+      name="second-op"
+      placeholder="Leave the field empty if you don't want to add all 4 options"
+    />
+  </div>
+
+  <div class="input-group mb-3">
+    <span class="input-group-text">Third option</span>
+    <input
+      type="text"
+      class="form-control"
+      aria-label="Third option"
+      id="third-op"
+      name="third-op"
+      placeholder="Leave the field empty if you don't want to add all 4 options"
+    />
+  </div>
+
+  <div class="input-group mb-3">
+    <span class="input-group-text">Fourth option</span>
+    <input
+      type="text"
+      class="form-control"
+      aria-label="Fourth option"
+      id="fourth-op"
+      name="fourth-op"
+      placeholder="Leave the field empty if you don't want to add all 4 options"
+    />
+  </div>
+
+  <br />
+  <div align="center">
+    <button
+      type="submit"
+      class="btn btn-primary"
+      id="add-survey"
+      name="add-survey"
+    >
+      Ask the world!
+    </button>
+  </div>
+</form>
+
+<h1 align="center">Other user surveys:</h1>
+<ul class="list-group list-group-flush" id="notes">
+  {%for survey in surveys %}
+  <form method="post">
+    <li class="list-group-item justify-content-between align-items-start">
+      <div>
+        {{survey.question}}
+        <br /><br />
+        <ol class="list-group list-group-numbered">
+          {% for option in survey.options %}
+          <li
+            class="list-group-item d-flex justify-content-between align-items-start"
+          >
+            <div class="ms-2 me-auto">{{option.text}}</div>
+            <span class="badge bg-primary rounded-pill">{{option.votes}}</span>
+            &nbsp;&nbsp;
+            <button
+              type="submit"
+              class="btn btn-outline-success"
+              id="{{option.text}}"
+              name="{{option.text}}"
+            >
+              VOTE
+            </button>
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+      <div>
+        {% if survey.user_id == user.id%}
+        <br />
+        <button
+          type="button"
+          class="btn btn-outline-danger"
+          aria-label="Close"
+          onClick="deleteSurvey({{survey.id}})"
+        >
+          Delete post
+        </button>
+        {% endif %}
+        <p
+          class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success bg-success bg-opacity-10 border border-success border-opacity-10 rounded-2"
+        >
+          {{ "Added by: {}".format(survey.user_id) }}
+        </p>
+      </div>
+    </li>
+  </form>
+
+  {% endfor %}
+</ul>
+{% endblock %}

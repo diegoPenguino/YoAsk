@@ -1,0 +1,28 @@
+p {
+    font-family: Arial;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+h1 {
+    font-family: Arial;
+}
+
+.head {
+    display: flex;
+    height: 40px;
+}
+
+.head-member {
+    flex: 1;
+}
+
+.links-head {
+    size: 3px;
+    color: coral;
+}
+
+.home {
+    size: 3px;
+    color: indianred;
+}
