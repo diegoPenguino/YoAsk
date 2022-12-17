@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, Blueprint, request, jsonify
 from flask_login import login_required, current_user
-from .models import Survey, Option
+from .models import Survey, Option, Votes
 from . import db
 import json
 
@@ -43,11 +43,25 @@ def add_survey() -> bool:
 @login_required
 def home():
     if request.method == "POST":
-        print(request.form)
         if "add-survey" in request.form:
             add_survey()
         else:
-            print(request.form)
+            data = list(request.form.keys())[0].split()
+            optionId = int(data[0])
+            surveyId = int(data[1])
+            option = Option.query.get(optionId)
+            survey = Survey.query.get(surveyId)
+            if option and survey:
+                if option.id == optionId and survey.id == surveyId:
+                    vote_registered = Votes.query.filter_by(survey_id=surveyId, user_id=current_user.id).first()
+                    if vote_registered is None:
+                        vote_registered = Votes(survey_id=surveyId, user_id=current_user.id)
+                        db.session.add(vote_registered)
+                        option.votes += 1
+                        db.session.commit()
+                        flash("Vote registered!", category="Success")
+                    else:
+                        flash("You've already voted! " + str(vote_registered), category="Warning")
 
     return render_template("home.html", title=f"{appName}", user=current_user, surveys=Survey.query.filter_by())
 

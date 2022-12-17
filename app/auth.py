@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for
 from app.constants import *
-from .models import User
+from .models import User_app
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db 
 from flask_login import login_user, login_required, logout_user, current_user
@@ -13,7 +13,7 @@ def login():
     if request.method == "POST":
         email = request.form.get('email')
         password = request.form.get('password')
-        user = User.query.filter_by(email=email).first()
+        user = User_app.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password):
                 flash("Logged in succesfully!", category = "success")
@@ -34,7 +34,7 @@ def signup():
         password = request.form.get('password')
         pass_confirmation = request.form.get('password-conf')
 
-        user = User.query.filter_by(email=email).first()
+        user = User_app.query.filter_by(email=email).first()
         if user:
             flash("Email already registered.", category="Warning")
         elif len(name) < 5:
@@ -42,7 +42,7 @@ def signup():
         elif password != pass_confirmation:
             flash("Passwords don't match", category="Failure")
         else:
-            new_user = User(email=email, name=name, password=generate_password_hash(password, method="sha256"))
+            new_user = User_app(email=email, name=name, password=generate_password_hash(password, method="sha256"))
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True) 

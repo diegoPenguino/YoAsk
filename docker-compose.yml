@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  app:
+    build: .
+    container_name: survey_api
+    depends_on:
+      - db
+    env_file:
+      - ./.flaskenv
+    ports:
+      - "5000:5000"
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password_weak
+      - POSTGRES_DB=flask_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+
+volumes:
+  postgres-db:
