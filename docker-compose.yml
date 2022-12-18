@@ -3,18 +3,18 @@ version: "3"
 services:
   app:
     build: .
-    container_name: survey_api
+    container_name: flask_app
     depends_on:
       - db
     env_file:
       - ./.flaskenv
     ports:
-      - "5000:5000"
+      - "3000:3000"
   db:
     image: postgres:latest
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password_weak
+      - POSTGRES_PASSWORD=password
       - POSTGRES_DB=flask_db
     ports:
       - "5432:5432"
