@@ -35,7 +35,7 @@ spec:
                 configMapKeyRef:
                   key: FLASK_APP
                   name: flaskenv
-          image: diegoangulo5:yoask-api:latest
+          image: diegoangulo5/yoask-api:latest
           name: flask-app
           ports:
             - containerPort: 3000
